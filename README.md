@@ -162,30 +162,17 @@
 - Create a README file written for humans where you store all the development steps.
 
 #### 4.2 Coding
-- (7.x) All functions MUST be namespaced with the full module or theme name as a prefix.
-- (7.x) A leading underscore MUST be prefixed to the function name for "private" functions.
 - Private functions should never be called from outside of the module in which they are declared.
 - Private functions should be declared at the bottom of a file.
 - Php Classes and Functions MUST be documented with "docblocks".
-- Follow the [Drupal development standards](https://www.drupal.org/docs/develop).
-- If you plan for long term support and there will be ongoing changes for the project consider creating a custom [Drupal distribution](https://www.drupal.org/docs/8/distributions).
-- When creating a Drupal distribution use an 1 word machine name without underscores (eg prefer "myproject" instead of "my_project").
 - All custom specific modules MUST be prefixed with `projectmachinename_`.
-- Use [drupal console](https://drupalconsole.com) to generate code (modules, plugins etc).
 
-#### 4.3 VCS - git
-- Use a git online UI (GitHub, Gitlab, Bitbucket etc). On the same system add your issues, documentation and [CI](http://cgit.drupalcode.org/drupal/tree/core/drupalci.yml) automation workflows.
-- Prefer using the [Feature branch workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow) with 1 only master branch, feature specific branches (for tasks and development), pull requests fro feature branches and git tags for live environment and so on.
-
-#### 4.4 Drupal scaffolding
-- Avoid using the [Drupal core composer.json](http://cgit.drupalcode.org/drupal/tree/composer.json) file as the main composer.json file. You may have conflicts when updating drupal core.
-- Use the official [drupal/recommended-project](https://github.com/drupal/recommended-project) for Drupal initial build except if the hosting provider proposes a different method (eg a redy to use composer.json file).
+#### 4.3 Drupal scaffolding
 - Use only 1 custom `settings.php` that includes environment specific additional settings files. Track the settings.php file on git but not the additional settings files.
 - Try to keep important Drupal settings on the settings.php additional files (eg enabled development modules, caching options, php ini settings etc) and not on the database.
 - Settings.php and additional files should work on a CI system and they should be "platform agnostic".
 - Use composer for dependencies and track only composer.json and composer.lock files on git.
-- Try to not track composer downloaded files on git (eg module/contrib, themes/contrib, core, vendor folders etc). Track them only if you have no options to run `composer install` on the online servers.
-- Prefer using a specific version for all packages and especially for Drupal core (eg `"drupal/core": "8.8.10"` instead of `"drupal/core": "^8.8"`)
+- Do to not track composer downloaded files on git (eg module/contrib, themes/contrib, core, vendor folders etc). Track them only if you have no options to run `composer install` on the online servers.
 - Patches should be added with composer using [cweagans/composer-patches](https://github.com/cweagans/composer-patches).
 - Keep the `config` folder out of the web files folder but track it on git.
 - Keep the `vendor` folder out of the web files folder.
@@ -195,27 +182,12 @@
 - Less modules is better.
 - Try to use only core modules and add contributed modules only if required.
 
-#### 4.5 Infrastructure
+#### 4.4 Infrastructure
 - Don't rise the recommended php memory_limit when there are relevant issues. Try to figure out what causes the memory_limit timeout.
 - Run cron externally (disable core cron settings).
 - Use a custom SMTP server to send emails.
 
-#### 4.6 Backups
-- Keep backups for the database with date specific pattern names (eg "livedb-2019-01-29T18:33:46+0200.sql.gz").
-- User generated public or private files (eg sites/default/files) should be backup separately from the database.
-- Always take a backup of current site before restoring a backup.
-
-#### 4.7 Testing
-- Write tests by bundle.
-- Generate dummy content.
-- Test the machine_name pattern.
-- Test by view_mode.
-- Test by entity submission form.
-- Test all the fields of the bundle (machine_name, no reused, non empty description, field type validation, labels, UI values).
-- Test the access permissions per user Role (IMPORTANT).
-- Investigate using a predefined, automated testing tool like [acquia/drupal-spec-tool](https://github.com/acquia/drupal-spec-tool).
-
-#### 4.8 Third party libraries
+#### 4.5 Third party libraries
 - Before adding an external library/dependency check if it is already available [on Core](http://cgit.drupalcode.org/drupal/tree/core/core.libraries.yml).
 - Prefer tiny and specific libraries.
 - Check the library popularity on its official repository. Avoid libraries with no traffic at all.
@@ -223,7 +195,7 @@
 - Always use a release of a library (if available) and not a generic branch.
 - If you care about performance try to download the libraries locally instead of using a CDN source.
 
-#### 4.9 Modules to use for development
+#### 4.6 Modules to use for development
 - [stage_file_proxy](https://www.drupal.org/project/stage_file_proxy)
 - [devel](https://www.drupal.org/project/devel)
 - [masquerade](https://www.drupal.org/project/masquerade)
@@ -231,59 +203,7 @@
 - [simplei](https://www.drupal.org/project/simplei)
 - [structure_sync](https://www.drupal.org/project/structure_sync)
 - [config_split](https://www.drupal.org/project/config_split)
-- [config_installer](https://www.drupal.org/project/config_installer)
 - [backup_migrate](https://www.drupal.org/project/backup_migrate)
-
-#### 4.10 Modules to avoid on live environments
-- dblog (use monolog or syslog instead)
-- See also [Acquia - Module incompatibilities](https://docs.acquia.com/acquia-cloud/develop/drupal/module-incompatibilities)
-
----
-
-### 5. Hosting
-- When selecting hosting consider additional needs such as CDN, SSL, Monitoring, Development Automation, development tools available etc.
-- In order to **support the project** technically (Drupal updates, security issues, technical support) use a hosting solution that allows to install drush, git, composer and supports system logging, cron jobs and ssh login. Otherwise use a Drupal specific hosting solution (**Acquia, Pantheon, Platform.sh**).
-- If you want to host multiple similar sites with the same code base (multisites) investigate using [Aegir](http://www.aegirproject.org) solutions such as [BOA](https://github.com/omega8cc/boa).
-- Don't use unmanaged servers except if you have a devops team with deep knowledge of Drupal hosting.
-
----
-
-### 6. Useful resources
-
-#### 6.1 Tools
-- [DrupalTools](https://drupaltools.github.io)
-- [acquia/drupal-spec-tool](https://github.com/acquia/drupal-spec-tool)
-
-#### 6.2 Drupal reporting modules
-- [field_report (8.x)](https://www.drupal.org/project/field_report)
-- [content_report (7.x)](https://www.drupal.org/project/content_report)
-- [prod_check (7.x, 8.x)](https://www.drupal.org/project/prod_check)
-- [site_audit (drush plugin 7.x, 8.x)](https://www.drupal.org/project/site_audit)
-- [quant (7.x)](https://www.drupal.org/project/quant)
-- [mysqlreport (7.x)](https://www.drupal.org/project/mysqlreport)
-- [unused_modules (7.x, 8.x)](https://www.drupal.org/project/unused_modules)
-
-#### 6.3 Articles & Guides
-- [Drupal development standards](https://www.drupal.org/docs/develop)
-- [theodorosploumis/drupal-report](https://github.com/theodorosploumis/drupal-report)
-- [Building a collaborative Drupal 8.x distribution](http://dropdog.readthedocs.io/)
-- [7.x site building best practices](https://www.drupal.org/docs/7/site-building-best-practices)
-- [Checklist for launching a site](https://www.drupal.org/node/1076460)
-- [Best practices to organise Drupal 7.x projects](https://www.drupalorganised.com/content)
-- [Drupal 8 Best Practices 2016](https://github.com/WondrousLLC/drupal-8-best-practices)
-- [Drupal 8 Composer Best Practices](https://www.lullabot.com/articles/drupal-8-composer-best-practices)
-- [Drupal 8 Site building best practices](http://www.gregboggs.com/drupal8-site-building-best-practices)
-- [Drupal Site building best practices](https://gist.github.com/Greg-Boggs/8a2661b70c4e293db585)
-- [Drupal 8 Theming best practices](http://www.gregboggs.com/drupal-8-theming-best-practices)
-- [Drupal Theming and Site Building: 6 Best Practices](https://evolvingweb.ca/blog/drupal-theming-and-site-building-6-best-practices)
-- [The best way to manage your Drupal 8.x workflow](https://medium.freecodecamp.org/the-best-way-to-manage-your-drupal-workflow-ade9525a84c0)
-- [Development best practices learned from the Drupal Dev Days Seville 2017](https://colorfield.be/blog/development-best-practices-learned-drupal-dev-days-seville-2017)
-- [Acquia Prelaunch checklist for Drupal sites](https://support.acquia.com/hc/en-us/articles/360005372114-Prelaunch-checklist-for-Drupal-sites)
-- [Google will Never Tell you About These Best Drupal Practices](https://opensenselabs.com/blog/articles/google-will-never-tell-you-about-these-best-drupal-practices)
-- [Video: Best Practice Site Architecture in Drupal 8, 2017](https://www.youtube.com/watch?v=4GLkujT3xFU)
-- [Drupal Quality Initiative (DQI) - Drupal 8 Best Practices](https://docs.google.com/document/d/1li4q07BfewNSSPYlHnolzJ-6hICHl-WPRPSVDfTg4Zo/edit)
-- [Gist: Drupal Site Building Best Practices](https://gist.github.com/Greg-Boggs/8a2661b70c4e293db585)
-- [Gist: Stanford Web Services Drupal Development Standards](https://gist.github.com/sherakama/d71f9a6070ed9264edf4)
 
 ---
 
